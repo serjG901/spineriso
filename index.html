@@ -1,0 +1,172 @@
+<html>
+  <title>Spinner with intersectionObserver</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100vw;
+      height: 100vh;
+    }
+    .spinner {
+      width: 100px;
+      height: 40px;
+      background-color: rgb(255, 255, 255);
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+    }
+    @keyframes hearthbit {
+      from {
+        clip-path: circle(65%);
+      }
+      to {
+        clip-path: circle(70%);
+      }
+    }
+    .granpa {
+      width: 10%;
+      height: 100%;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      /*background-color: red;*/
+      justify-content: end;
+    }
+
+    .papa {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 900%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      /* background-color: green;*/
+      justify-content: flex-end;
+    }
+
+    .child {
+      width: 100%;
+      min-height: 4px;
+      /* background-color: blue;*/
+      border-bottom: 2px solid rgb(133, 133, 133);
+      position: absolute;
+      animation: 0.5s ease-in-out infinite alternate slide,
+        20s ease-in-out infinite alternate hearthbit;
+    }
+    @keyframes slide {
+      from {
+        transform: translateX(0%);
+      }
+      to {
+        transform: translateX(-900%);
+      }
+    }
+    .grain {
+      width: 100%;
+      height: 4px;
+      background-color: gray;
+      /*border-radius: 50%;*/
+     /* transition: all 1s linear;*/
+    }
+
+    .papa >.grain:last-child,
+    .granpa >.grain:last-child {
+      margin-bottom: 2px;
+    }
+  </style>
+  <body>
+    <div id="spinner" class="spinner">
+      <div id="granpa" class="granpa">
+        <div id="papa" class="papa">
+          <div id="child" class="child"></div>
+        </div>
+        <div class="grain" style="background-color: red;"></div>
+        <div class="grain" style="background-color: orange;"></div>
+        <div class="grain" style="background-color: yellow;"></div>
+        <div class="grain" style="background-color: rgb(0, 255, 0);"></div>
+        <div class="grain" style="background-color: rgb(106, 218, 255);"></div>
+        <div class="grain" style="background-color: rgb(0, 81, 255);"></div>
+        <div class="grain" style="background-color: purple;"></div>
+        <div class="grain" style="background-color: violet;"></div>
+        <div class="grain" style="background-color: pink;"></div>
+      </div>
+    </div>
+  </body>
+  <script>
+    const granpa = document.querySelector("#granpa");
+    const papa = document.querySelector("#papa");
+    const child = document.querySelector("#child");
+    const maxCount = document.querySelectorAll("#granpa >.grain").length;
+    let direction = "right";
+    let optionsGranpa = {
+      root: granpa,
+      rootMargin: "0px",
+      threshold: 0.9,
+    };
+    let callbackGranpa = (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          if (direction == "right") {
+            console.log("granpa");
+            child.appendChild(granpa.lastChild);
+          } else {
+            child.lastChild && granpa.appendChild(child.lastChild);
+          }
+        } else {
+          const grains = document.querySelectorAll("#granpa >.grain").length;
+          if (grains === maxCount) direction = "right";
+        }
+        //   entry.boundingClientRect
+        //   entry.intersectionRatio
+        //   entry.intersectionRect
+        //   entry.isIntersecting
+        //   entry.rootBounds
+        //   entry.target
+        //   entry.time
+      });
+    };
+    let observerGranpa = new IntersectionObserver(
+      callbackGranpa,
+      optionsGranpa
+    );
+    observerGranpa.observe(child);
+
+    let optionsPapa = {
+      root: papa,
+      rootMargin: "0px",
+      threshold: 0.9,
+    };
+    let callbackPapa = (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          if (direction == "left") {
+            console.log("papa");
+            child.appendChild(papa.lastChild);
+          } else {
+            child.lastChild && papa.appendChild(child.lastChild);
+          }
+        } else {
+          const grains = document.querySelectorAll("#papa .grain").length;
+          if (grains === maxCount) direction = "left";
+        }
+        //   entry.boundingClientRect
+        //   entry.intersectionRatio
+        //   entry.intersectionRect
+        //   entry.isIntersecting
+        //   entry.rootBounds
+        //   entry.target
+        //   entry.time
+      });
+    };
+    let observerPapa = new IntersectionObserver(callbackPapa, optionsPapa);
+    observerPapa.observe(child);
+  </script>
+</html>
