@@ -100,7 +100,6 @@
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           if (direction == "right") {
-            console.log(granpa.lastChild);
             child.appendChild(granpa.lastChild);
           } else {
             child.lastChild && granpa.appendChild(child.lastChild);
@@ -126,7 +125,6 @@
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           if (direction == "left") {
-            console.log("papa");
             child.appendChild(papa.lastChild);
           } else {
             child.lastChild && papa.appendChild(child.lastChild);
