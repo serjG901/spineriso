@@ -14,20 +14,11 @@
       height: 100vh;
     }
     .spinner {
-      width: 100px;
-      height: 40px;
-      background-color: rgb(255, 255, 255);
+      width: 200px;
+      height: 80px;
       position: relative;
       display: flex;
       align-items: flex-end;
-    }
-    @keyframes hearthbit {
-      from {
-        clip-path: circle(65%);
-      }
-      to {
-        clip-path: circle(70%);
-      }
     }
     .granpa {
       width: 10%;
@@ -36,7 +27,6 @@
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      /*background-color: red;*/
       justify-content: end;
     }
 
@@ -48,15 +38,13 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      /* background-color: green;*/
       justify-content: flex-end;
     }
 
     .child {
       width: 100%;
-      min-height: 4px;
-      /* background-color: blue;*/
-      border-bottom: 2px solid rgb(133, 133, 133);
+      min-height: 8px;
+      border-bottom: 4px solid rgb(133, 133, 133);
       position: absolute;
       animation: 0.5s ease-in-out infinite alternate slide,
         20s ease-in-out infinite alternate hearthbit;
@@ -69,17 +57,23 @@
         transform: translateX(-900%);
       }
     }
+    @keyframes hearthbit {
+      from {
+        clip-path: circle(65%);
+      }
+      to {
+        clip-path: circle(70%);
+      }
+    }
     .grain {
       width: 100%;
-      height: 4px;
+      height: 8px;
       background-color: gray;
-      /*border-radius: 50%;*/
-     /* transition: all 1s linear;*/
     }
 
-    .papa >.grain:last-child,
-    .granpa >.grain:last-child {
-      margin-bottom: 2px;
+    .papa > .grain:last-child,
+    .granpa > .grain:last-child {
+      margin-bottom: 4px;
     }
   </style>
   <body>
@@ -88,16 +82,7 @@
         <div id="papa" class="papa">
           <div id="child" class="child"></div>
         </div>
-        <div class="grain" style="background-color: red;"></div>
-        <div class="grain" style="background-color: orange;"></div>
-        <div class="grain" style="background-color: yellow;"></div>
-        <div class="grain" style="background-color: rgb(0, 255, 0);"></div>
-        <div class="grain" style="background-color: rgb(106, 218, 255);"></div>
-        <div class="grain" style="background-color: rgb(0, 81, 255);"></div>
-        <div class="grain" style="background-color: purple;"></div>
-        <div class="grain" style="background-color: violet;"></div>
-        <div class="grain" style="background-color: pink;"></div>
-      </div>
+        <div class="grain" style="background-color: red"></div><div class="grain" style="background-color: orange"></div><div class="grain" style="background-color: yellow"></div><div class="grain" style="background-color: rgb(0, 255, 0)"></div><div class="grain" style="background-color: rgb(106, 218, 255)"></div><div class="grain" style="background-color: rgb(0, 81, 255)"></div><div class="grain" style="background-color: purple"></div><div class="grain" style="background-color: violet"></div><div class="grain" style="background-color: pink"></div></div>
     </div>
   </body>
   <script>
@@ -115,7 +100,7 @@
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           if (direction == "right") {
-            console.log("granpa");
+            console.log(granpa.lastChild);
             child.appendChild(granpa.lastChild);
           } else {
             child.lastChild && granpa.appendChild(child.lastChild);
@@ -124,13 +109,6 @@
           const grains = document.querySelectorAll("#granpa >.grain").length;
           if (grains === maxCount) direction = "right";
         }
-        //   entry.boundingClientRect
-        //   entry.intersectionRatio
-        //   entry.intersectionRect
-        //   entry.isIntersecting
-        //   entry.rootBounds
-        //   entry.target
-        //   entry.time
       });
     };
     let observerGranpa = new IntersectionObserver(
@@ -157,13 +135,6 @@
           const grains = document.querySelectorAll("#papa .grain").length;
           if (grains === maxCount) direction = "left";
         }
-        //   entry.boundingClientRect
-        //   entry.intersectionRatio
-        //   entry.intersectionRect
-        //   entry.isIntersecting
-        //   entry.rootBounds
-        //   entry.target
-        //   entry.time
       });
     };
     let observerPapa = new IntersectionObserver(callbackPapa, optionsPapa);
